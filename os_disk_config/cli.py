@@ -21,6 +21,8 @@ import os
 import sys
 import yaml
 
+import blivet
+
 from os_disk_config import objects
 from os_disk_config import version
 
@@ -93,10 +95,14 @@ def main(argv=sys.argv):
     logger.info('Using config file at: %s' % opts.config_file)
     part_array = []
     
-    if os.path.exists('/dev/disk/by-uuid/'):
-        if os.listdir('/dev/disk/by-uuid/') == []:
-            logger.error('The system only has one disk')
-            return 1
+    # TODO(bnemec): This needs to be a provider function so it can be swapped
+    # out for other implementations.
+    b = blivet.Blivet()
+    b.reset()
+    disks = [i for i in b.devices if len(i.parents) == 0]
+    if len(disks) <= 1:
+        logger.error('The system only has one disk')
+        return 1
     if os.path.exists(opts.config_file):
         with open(opts.config_file) as cf:
             part_array = yaml.load(cf.read()).get("partitions")
