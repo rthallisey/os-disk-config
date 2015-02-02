@@ -95,8 +95,11 @@ def main(argv=sys.argv):
     configure_logger(opts.verbose, opts.debug)
     logger.info('Using config file at: %s' % opts.config_file)
     iface_array = []
-
-    provider = None
+    
+    if os.path.exists('/dev/disk/by-uuid/'):
+        if os.listdir('/dev/disk/by-uuid/') == []:
+            logger.error('The system only has one disk')
+            return 1
     if os.path.exists(opts.config_file):
         with open(opts.config_file) as cf:
             iface_array = yaml.load(cf.read()).get("disk_config")
