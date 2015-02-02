@@ -14,18 +14,18 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-from os_net_config import objects
+from os_disk_config import objects
 
 
 class NotImplemented(Exception):
     pass
 
 
-class NetConfig(object):
-    """Configure network interfaces using the ifcfg format."""
+class DiskConfig(object):
+    """Configure disk interface."""
 
     def add_object(self, obj):
-        """Convenience method to add any type of object to the network config.
+        """Convenience method to add any type of object to the disk config.
            See objects.py.
 
         :param obj: The object to add.
@@ -43,36 +43,8 @@ class NetConfig(object):
             for member in obj.members:
                 self.add_object(member)
 
-    def add_interface(self, interface):
-        """Add an Interface object to the net config object.
-
-        :param interface: The Interface object to add.
-        """
-        raise NotImplemented("add_interface is not implemented.")
-
-    def add_vlan(self, vlan):
-        """Add a Vlan object to the net config object.
-
-        :param vlan: The vlan object to add.
-        """
-        raise NotImplemented("add_vlan is not implemented.")
-
-    def add_bridge(self, bridge):
-        """Add an OvsBridge object to the net config object.
-
-        :param bridge: The OvsBridge object to add.
-        """
-        raise NotImplemented("add_bridge is not implemented.")
-
-    def add_bond(self, bond):
-        """Add an OvsBond object to the net config object.
-
-        :param bridge: The OvsBond object to add.
-        """
-        raise NotImplemented("add_bond is not implemented.")
-
     def apply(self, noop=False, cleanup=False):
-        """Apply the network configuration.
+        """Apply the disk configuration.
 
         :param noop: A boolean which indicates whether this is a no-op.
         :param cleanup: A boolean which indicates whether any undefined
