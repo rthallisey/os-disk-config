@@ -51,12 +51,10 @@ else:
 import six
 import six.moves.xmlrpc_client as xmlrpclib
 
-from os_net_config.openstack.common import gettextutils
-from os_net_config.openstack.common import importutils
-from os_net_config.openstack.common import strutils
-from os_net_config.openstack.common import timeutils
-
-netaddr = importutils.try_import("netaddr")
+from os_disk_config.openstack.common import gettextutils
+from os_disk_config.openstack.common import importutils
+from os_disk_config.openstack.common import strutils
+from os_disk_config.openstack.common import timeutils
 
 _nasty_type_tests = [inspect.ismodule, inspect.isclass, inspect.ismethod,
                      inspect.isfunction, inspect.isgeneratorfunction,
@@ -152,8 +150,6 @@ def to_primitive(value, convert_instances=False, convert_datetime=True,
             # Likely an instance of something. Watch for cycles.
             # Ignore class member vars.
             return recursive(value.__dict__, level=level + 1)
-        elif netaddr and isinstance(value, netaddr.IPAddress):
-            return six.text_type(value)
         else:
             if any(test(value) for test in _nasty_type_tests):
                 return six.text_type(value)

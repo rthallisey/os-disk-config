@@ -41,10 +41,10 @@ from oslo.config import cfg
 import six
 from six import moves
 
-from os_net_config.openstack.common.gettextutils import _
-from os_net_config.openstack.common import importutils
-from os_net_config.openstack.common import jsonutils
-from os_net_config.openstack.common import local
+from os_disk_config.openstack.common.gettextutils import _
+from os_disk_config.openstack.common import importutils
+from os_disk_config.openstack.common import jsonutils
+from os_disk_config.openstack.common import local
 
 
 _DEFAULT_LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -542,7 +542,7 @@ def _setup_logging_from_conf(project, version):
 
     if CONF.publish_errors:
         handler = importutils.import_object(
-            "os_net_config.openstack.common.log_handler.PublishErrorsHandler",
+            "os_disk_config.openstack.common.log_handler.PublishErrorsHandler",
             logging.ERROR)
         log_root.addHandler(handler)
 
