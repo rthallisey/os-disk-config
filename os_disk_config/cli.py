@@ -21,11 +21,11 @@ import os
 import sys
 import yaml
 
-from os_net_config import impl_eni
-from os_net_config import impl_ifcfg
-from os_net_config import impl_iproute
-from os_net_config import objects
-from os_net_config import version
+from os_disk_config import impl_eni
+from os_disk_config import impl_ifcfg
+from os_disk_config import impl_iproute
+from os_disk_config import objects
+from os_disk_config import version
 
 
 logger = logging.getLogger(__name__)
@@ -33,11 +33,11 @@ logger = logging.getLogger(__name__)
 
 def parse_opts(argv):
     parser = argparse.ArgumentParser(
-        description='Configure host network interfaces using a JSON'
-        ' config file format.')
+        description='Configure disk interfaces using a JSON config'
+        ' file format.')
     parser.add_argument('-c', '--config-file', metavar='CONFIG_FILE',
                         help="""path to the configuration file.""",
-                        default='/etc/os-net-config/config.yaml')
+                        default='/etc/os-disk-config/config.yaml')
     parser.add_argument('-p', '--provider', metavar='PROVIDER',
                         help="""The provider to use."""
                         """One of: ifcfg, eni, iproute.""",
@@ -97,29 +97,10 @@ def main(argv=sys.argv):
     iface_array = []
 
     provider = None
-    if opts.provider:
-        if opts.provider == 'ifcfg':
-            provider = impl_ifcfg.IfcfgNetConfig()
-        elif opts.provider == 'eni':
-            provider = impl_eni.ENINetConfig()
-        elif opts.provider == 'iproute':
-            provider = impl_iproute.IPRouteNetConfig()
-        else:
-            logger.error('Invalid provider specified.')
-            return 1
-    else:
-        if os.path.exists('/etc/sysconfig/network-scripts/'):
-            provider = impl_ifcfg.IfcfgNetConfig()
-        elif os.path.exists('/etc/network/'):
-            provider = impl_eni.ENINetConfig()
-        else:
-            logger.error('Unable to set provider for this operating system.')
-            return 1
-
     if os.path.exists(opts.config_file):
         with open(opts.config_file) as cf:
-            iface_array = yaml.load(cf.read()).get("network_config")
-            logger.debug('network_config JSON: %s' % str(iface_array))
+            iface_array = yaml.load(cf.read()).get("disk_config")
+            logger.debug('disk_config JSON: %s' % str(iface_array))
     else:
         logger.error('No config file exists at: %s' % opts.config_file)
         return 1
