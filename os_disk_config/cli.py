@@ -23,6 +23,7 @@ import yaml
 
 import blivet
 
+from os_disk_config import impl_blivet
 from os_disk_config import objects
 from os_disk_config import version
 
@@ -94,13 +95,11 @@ def main(argv=sys.argv):
     configure_logger(opts.verbose, opts.debug)
     logger.info('Using config file at: %s' % opts.config_file)
     part_array = []
-    
-    # TODO(bnemec): This needs to be a provider function so it can be swapped
-    # out for other implementations.
-    b = blivet.Blivet()
-    b.reset()
-    disks = [i for i in b.devices if len(i.parents) == 0]
-    if len(disks) <= 1:
+
+    # NOTE(bnemec): Add alternate implementations here
+    provider = impl_blivet.BlivetDiskConfig()
+
+    if len(provider.disks()) <= 1:
         logger.error('The system only has one disk')
         return 1
     if os.path.exists(opts.config_file):
