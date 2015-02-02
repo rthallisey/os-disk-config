@@ -21,9 +21,6 @@ import os
 import sys
 import yaml
 
-from os_disk_config import impl_eni
-from os_disk_config import impl_ifcfg
-from os_disk_config import impl_iproute
 from os_disk_config import objects
 from os_disk_config import version
 
@@ -94,7 +91,7 @@ def main(argv=sys.argv):
     opts = parse_opts(argv)
     configure_logger(opts.verbose, opts.debug)
     logger.info('Using config file at: %s' % opts.config_file)
-    iface_array = []
+    part_array = []
     
     if os.path.exists('/dev/disk/by-uuid/'):
         if os.listdir('/dev/disk/by-uuid/') == []:
@@ -102,16 +99,16 @@ def main(argv=sys.argv):
             return 1
     if os.path.exists(opts.config_file):
         with open(opts.config_file) as cf:
-            iface_array = yaml.load(cf.read()).get("disk_config")
-            logger.debug('disk_config JSON: %s' % str(iface_array))
+            part_array = yaml.load(cf.read()).get("partitions")
+            logger.debug('partitions JSON: %s' % str(part_array))
     else:
         logger.error('No config file exists at: %s' % opts.config_file)
         return 1
-    if not isinstance(iface_array, list):
+    if not isinstance(part_array, list):
         logger.error('No interfaces defined in config: %s' % opts.config_file)
         return 1
-    for iface_json in iface_array:
-        obj = objects.object_from_json(iface_json)
+    for part_json in part_array:
+        obj = objects.object_from_json(part_json)
         provider.add_object(obj)
     files_changed = provider.apply(noop=opts.noop, cleanup=opts.cleanup)
     if opts.noop:

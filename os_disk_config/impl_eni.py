@@ -18,10 +18,10 @@ import logging
 
 import netaddr
 import os_net_config
-from os_net_config import objects
-from os_net_config import utils
+from os_disk_config import objects
+from os_disk_config import utils
 
-from os_net_config.openstack.common import processutils
+from os_disk_config.openstack.common import processutils
 
 
 logger = logging.getLogger(__name__)

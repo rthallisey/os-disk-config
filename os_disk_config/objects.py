@@ -18,7 +18,7 @@ import logging
 import netaddr
 from openstack.common import strutils
 
-from os_net_config import utils
+from os_disk_config import utils
 
 
 logger = logging.getLogger(__name__)

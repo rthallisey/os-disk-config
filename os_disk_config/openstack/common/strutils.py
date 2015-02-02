@@ -24,7 +24,7 @@ import unicodedata
 
 import six
 
-from os_net_config.openstack.common.gettextutils import _
+from os_disk_config.openstack.common.gettextutils import _
 
 
 UNIT_PREFIX_EXPONENT = {
