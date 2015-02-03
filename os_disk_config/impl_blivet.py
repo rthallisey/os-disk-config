@@ -56,11 +56,11 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
             self._blivet.formatDevice(partition, filesystem)
             logger.info('Formatting %s as %s', partition.path, obj.filesystem)
             if obj.mountpoint is not None:
-                self._mounts.append((partition.path, obj.mountpoint, obj.filesystem))
+                self._mounts.append((partition, obj.mountpoint))
                 logger.info('Mounting %s at %s', partition.path, obj.mountpoint)
 
     def apply(self, noop):
         if not noop:
             self._blivet.doIt()
             for i in self._mounts:
-                blivet.util.mount(*i)
+                i[0].format.mount(mountpoint=i[1])
