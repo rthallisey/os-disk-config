@@ -40,7 +40,7 @@ def parse_opts(argv):
                         default='/etc/os-disk-config/config.yaml')
     parser.add_argument('-p', '--provider', metavar='PROVIDER',
                         help="""The provider to use."""
-                        """One of: ifcfg, eni, iproute.""",
+                        """One of: blivet.""",
                         default=None)
     parser.add_argument(
         '-d', '--debug',
@@ -62,13 +62,6 @@ def parse_opts(argv):
         dest="noop",
         action='store_true',
         help="Return the configuration commands, without applying them.",
-        required=False)
-
-    parser.add_argument(
-        '--cleanup',
-        dest="cleanup",
-        action='store_true',
-        help="Cleanup unconfigured interfaces.",
         required=False)
 
     opts = parser.parse_args(argv[1:])
@@ -115,7 +108,7 @@ def main(argv=sys.argv):
     for part_json in part_array:
         obj = objects.object_from_json(part_json)
         provider.add_object(obj)
-    files_changed = provider.apply(noop=opts.noop, cleanup=opts.cleanup)
+    files_changed = provider.apply(noop=opts.noop)
     if opts.noop:
         for location, data in files_changed.iteritems():
             print "File: %s\n" % location
