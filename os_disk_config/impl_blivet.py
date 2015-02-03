@@ -29,6 +29,10 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
         self._blivet.reset()
         self._mounts = []
         self._initialized_disks = set()
+        # Impose an ordering based on the order of partitions in the config.
+        # Otherwise blivet somewhat arbitrarily chooses the ordering, which
+        # can result in unintuitive partition layouts.
+        self._next_weight = 0
 
     def disks(self):
         return [i.path for i in self._blivet.devices if len(i.parents) == 0]
@@ -45,7 +49,10 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
                 self._initialized_disks.add(dev)
             disks.append(dev)
         partition = self._blivet.newPartition(size=blivet.Size(obj.size),
-                                              parents=disks)
+                                              parents=disks,
+                                              weight=self._next_weight)
+        # Lower weights will be allocated after higher weights
+        self._next_weight -= 100
         self._blivet.createDevice(partition)
         blivet.partitioning.doPartitioning(self._blivet)
         logger.info('Creating partition %s', partition.path)
