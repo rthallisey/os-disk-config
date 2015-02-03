@@ -25,8 +25,6 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
     def disks(self):
         return [i.path for i in self._blivet.devices if len(i.parents) == 0]
 
-    def add_object(self, obj):
-        pass
-
-    def apply(self, noop, cleanup):
-        pass
+    def apply(self, noop):
+        if not noop:
+            self._blivet.doIt()

@@ -18,15 +18,27 @@ import six
 
 @six.add_metaclass(abc.ABCMeta)
 class DiskConfigBase(object):
+    """Base class for disk configuration implementations"""
     @abc.abstractmethod
     def disks(self):
         """Return a list of paths to disks on the system"""
         pass
 
-    @abc.abstractmethod
     def add_object(self, obj):
+        """Convenience method to add any type of object to the disk config.
+           See objects.py.
+
+        :param obj: The object to add.
+        """
         pass
 
     @abc.abstractmethod
-    def apply(self, noop, cleanup):
+    def apply(self, noop):
+        """Apply the disk configuration.
+
+        :param noop: A boolean which indicates whether this is a no-op.
+        :returns: a dict of the format: filename/data which contains info
+            for each file that was changed (or would be changed if in --noop
+            mode).
+        """
         pass
