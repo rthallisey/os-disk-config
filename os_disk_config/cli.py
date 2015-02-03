@@ -109,11 +109,6 @@ def main(argv=sys.argv):
         obj = objects.object_from_json(part_json)
         provider.add_object(obj)
     files_changed = provider.apply(noop=opts.noop)
-    if opts.noop:
-        for location, data in files_changed.iteritems():
-            print "File: %s\n" % location
-            print data
-            print "----"
     return 0
 
 

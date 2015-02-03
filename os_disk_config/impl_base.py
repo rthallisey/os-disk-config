@@ -16,6 +16,8 @@ import abc
 
 import six
 
+from os_disk_config import objects
+
 @six.add_metaclass(abc.ABCMeta)
 class DiskConfigBase(object):
     """Base class for disk configuration implementations"""
@@ -30,6 +32,12 @@ class DiskConfigBase(object):
 
         :param obj: The object to add.
         """
+        if isinstance(obj, objects.StandardPartition):
+            self.add_standard_partition(obj)
+
+    @abc.abstractmethod
+    def add_standard_partition(self, obj):
+        """Add a StandardPartition object to the disk config"""
         pass
 
     @abc.abstractmethod
