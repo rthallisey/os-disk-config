@@ -39,8 +39,8 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
 
     def add_standard_partition(self, obj):
         disks = []
-        for i in obj.disks:
-            dev = self._blivet.devicetree.getDeviceByName(i)
+        for d in obj.disks:
+            dev = self._blivet.devicetree.resolveDevice(d)
             # NOTE(bnemec): This will fail if dev already has partitions.
             # We will need to figure out whether to wipe partitions or just
             # fail in that case.
