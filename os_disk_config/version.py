@@ -16,4 +16,4 @@
 
 import pbr.version
 
-version_info = pbr.version.VersionInfo('os-net-config')
+version_info = pbr.version.VersionInfo('os-disk-config')
