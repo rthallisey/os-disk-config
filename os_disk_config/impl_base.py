@@ -20,7 +20,7 @@ import six
 class DiskConfigBase(object):
     @abc.abstractmethod
     def disks(self):
-        """Return a list of disks on the system"""
+        """Return a list of paths to disks on the system"""
         pass
 
     @abc.abstractmethod
