@@ -23,18 +23,17 @@ db17ca07-01'''
 
 FSTAB = ['UUID=c3dbe26e-e200-496e-af8e-d3071afe1a29 /  ext4  defaults  1 1']
 FSTAB_EXISTING = [
-'UUID=c3dbe26e-e200-496e-af8e-d3071afe1a29 /  ext4  defaults  1 1',
-'',
-'# Entry added by os-disk-config.  Do not edit.',
-'UUID=41a155bc-0032-4794-a321-d71402e8d7d3 /mnt/test ext4 defaults 1 1'
+    'UUID=c3dbe26e-e200-496e-af8e-d3071afe1a29 /  ext4  defaults  1 1',
+    '',
+    '# Entry added by os-disk-config.  Do not edit.',
+    'UUID=41a155bc-0032-4794-a321-d71402e8d7d3 /mnt/test ext4 defaults 1 1'
 ]
 FSTAB_COMMENTED = [
-'UUID=c3dbe26e-e200-496e-af8e-d3071afe1a29 /  ext4  defaults  1 1',
-'',
-'# Entry added by os-disk-config.  Do not edit.',
-'#UUID=41a155bc-0032-4794-a321-d71402e8d7d3 /mnt/test ext4 defaults 1 1'
+    'UUID=c3dbe26e-e200-496e-af8e-d3071afe1a29 /  ext4  defaults  1 1',
+    '',
+    '# Entry added by os-disk-config.  Do not edit.',
+    '#UUID=41a155bc-0032-4794-a321-d71402e8d7d3 /mnt/test ext4 defaults 1 1'
 ]
-
 
 
 class TestBase(base.BaseTestCase):

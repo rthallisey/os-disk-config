@@ -18,6 +18,7 @@ from oslotest import base
 
 from os_disk_config import objects
 
+
 class TestVersions(base.BaseTestCase):
     def test_matching_versions(self):
         d = dict(version=objects.CONFIG_VERSION)

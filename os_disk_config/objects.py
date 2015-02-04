@@ -16,8 +16,8 @@
 
 import logging
 
-from os_disk_config import utils
 from os_disk_config.openstack.common import versionutils
+from os_disk_config import utils
 
 
 logger = logging.getLogger(__name__)
@@ -79,7 +79,6 @@ class StandardPartition(_BaseOpts):
     def __init__(self, name, disks, size, filesystem, mountpoint):
         super(StandardPartition, self).__init__(name, disks, size, filesystem,
                                                 mountpoint)
-
 
     @staticmethod
     def from_json(json):

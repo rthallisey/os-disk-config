@@ -21,8 +21,6 @@ import os
 import sys
 import yaml
 
-import blivet
-
 from os_disk_config import impl_blivet
 from os_disk_config import objects
 from os_disk_config import version
