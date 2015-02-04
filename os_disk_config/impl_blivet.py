@@ -59,7 +59,6 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
                 self._blivet.initializeDisk(dev)
                 self._initialized_disks.add(dev)
             disks.append(dev)
-        print self._next_weight
         partition = self._blivet.newPartition(size=blivet.Size(obj.size),
                                               parents=disks,
                                               weight=self._next_weight)
