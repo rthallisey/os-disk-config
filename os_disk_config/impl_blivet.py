@@ -59,14 +59,16 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
                 self._blivet.initializeDisk(dev)
                 self._initialized_disks.add(dev)
             disks.append(dev)
-        return self._blivet.newPartition(size=blivet.Size(obj.size),
-                                         parents=disks,
-                                         weight=self._next_weight)
+        print self._next_weight
+        partition = self._blivet.newPartition(size=blivet.Size(obj.size),
+                                              parents=disks,
+                                              weight=self._next_weight)
+        # Lower weights will be allocated after higher weights
+        self._next_weight -= 100
+        return partition
 
     def _create_partition(self, partition):
         """Add partition to the list of devices scheduled for creation"""
-        # Lower weights will be allocated after higher weights
-        self._next_weight -= 100
         self._blivet.createDevice(partition)
         blivet.partitioning.doPartitioning(self._blivet)
         logger.info('Creating partition %s', partition.path)
