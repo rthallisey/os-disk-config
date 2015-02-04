@@ -38,6 +38,17 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
         return [i.path for i in self._blivet.devices if len(i.parents) == 0]
 
     def add_standard_partition(self, obj):
+        partition = self._get_partition(obj)
+        self._create_partition(partition)
+
+        if obj.filesystem is not None:
+            self._format_partition(obj, partition)
+            if obj.mountpoint is not None:
+                self._mounts.append((partition, obj.mountpoint))
+                logger.info('Mounting %s at %s', partition.path, obj.mountpoint)
+
+    def _get_partition(self, obj):
+        """Build a blivet partition object based on the data in obj"""
         disks = []
         for d in obj.disks:
             dev = self._blivet.devicetree.resolveDevice(d)
@@ -48,23 +59,23 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
                 self._blivet.initializeDisk(dev)
                 self._initialized_disks.add(dev)
             disks.append(dev)
-        partition = self._blivet.newPartition(size=blivet.Size(obj.size),
-                                              parents=disks,
-                                              weight=self._next_weight)
+        return self._blivet.newPartition(size=blivet.Size(obj.size),
+                                         parents=disks,
+                                         weight=self._next_weight)
+
+    def _create_partition(self, partition):
+        """Add partition to the list of devices scheduled for creation"""
         # Lower weights will be allocated after higher weights
         self._next_weight -= 100
         self._blivet.createDevice(partition)
         blivet.partitioning.doPartitioning(self._blivet)
         logger.info('Creating partition %s', partition.path)
 
-        if obj.filesystem is not None:
-            filesystem = blivet.formats.getFormat(obj.filesystem,
-                                                  device=partition.path)
-            self._blivet.formatDevice(partition, filesystem)
-            logger.info('Formatting %s as %s', partition.path, obj.filesystem)
-            if obj.mountpoint is not None:
-                self._mounts.append((partition, obj.mountpoint))
-                logger.info('Mounting %s at %s', partition.path, obj.mountpoint)
+    def _format_partition(self, obj, partition):
+        filesystem = blivet.formats.getFormat(obj.filesystem,
+                                              device=partition.path)
+        self._blivet.formatDevice(partition, filesystem)
+        logger.info('Formatting %s as %s', partition.path, obj.filesystem)
 
     def apply(self, noop):
         if not noop:
