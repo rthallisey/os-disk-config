@@ -16,7 +16,6 @@
 
 import logging
 
-from openstack.common import strutils
 from os_disk_config import utils
 
 
