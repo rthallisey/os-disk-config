@@ -13,10 +13,16 @@
 # under the License.
 
 import abc
+import logging
+import subprocess
 
 import six
 
 from os_disk_config import objects
+
+
+logger = logging.getLogger(__name__)
+
 
 @six.add_metaclass(abc.ABCMeta)
 class DiskConfigBase(object):
@@ -50,3 +56,37 @@ class DiskConfigBase(object):
             mode).
         """
         pass
+
+    def add_to_fstab(self, device, path, filesystem, options, dump):
+        """Add an entry to /etc/fstab for the specified partition
+
+        Checks to see if an entry already exists, and if not adds one.
+
+        :param device: The path to the partition device file, e.g. /dev/sda1.
+        :param path: The path at which to mount the partition.
+        :param filesystem: The filesystem on the partition.
+        :param options: The options for mounting the filesystem.
+        :param dump: Boolean indicating whether the filesystem will be
+            included in dump(8) backups.
+        """
+        uuid = self.get_uuid(device)
+        dump = 1 if dump else 0
+        newline = 'UUID=%s %s %s %s %s 1' % (uuid, path, filesystem, options,
+                                             dump)
+        with open('/etc/fstab') as fstab:
+            lines = fstab.readlines()
+            for line in lines:
+                split_line = line.split()
+                if (len(split_line) > 2 and
+                        not split_line[0].startswith('#') and
+                        split_line[1] == path):
+                    logger.warning('Found existing fstab entry for %s. '
+                                   'Will not add a duplicate.', path)
+                    return
+        with open('/etc/fstab', 'a') as fstab:
+            fstab.write('\n# Entry added by os-disk-config.  Do not edit.\n')
+            fstab.write(newline + '\n')
+
+    def get_uuid(self, device):
+        output = subprocess.check_output(['blkid', '-o', 'value', device])
+        return output.split()[0]

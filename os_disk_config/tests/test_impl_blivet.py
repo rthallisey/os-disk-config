@@ -1,4 +1,4 @@
-# Copyright 2014 Red Hat, Inc.
+# Copyright 2015 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -49,6 +49,7 @@ class TestStandardPartition(base.BaseTestCase):
         self.mock_blivet = self.patcher.start()
         self.mock_blivet.return_value = self.blivet_instance
         self.dc = impl_blivet.BlivetDiskConfig()
+        self.dc.add_to_fstab = mock.Mock()
 
     def test_constructor(self):
         self.blivet_instance.reset.assert_called_once_with()

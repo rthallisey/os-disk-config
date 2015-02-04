@@ -82,4 +82,11 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
         if not noop:
             self._blivet.doIt()
             for i in self._mounts:
-                i[0].format.mount(mountpoint=i[1])
+                partition = i[0]
+                mountpoint = i[1]
+                partition.format.mount(mountpoint=mountpoint)
+                self.add_to_fstab(partition.path,
+                                  mountpoint,
+                                  partition.format.name,
+                                  partition.format.options,
+                                  partition.format.dump)
