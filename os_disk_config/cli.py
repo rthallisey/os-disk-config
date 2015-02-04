@@ -92,9 +92,11 @@ def main(argv=sys.argv):
     # NOTE(bnemec): Add alternate implementations here
     provider = impl_blivet.BlivetDiskConfig()
 
-    if len(provider.disks()) <= 1:
+    disks = provider.disks()
+    if len(disks) <= 1:
         logger.error('The system only has one disk')
         return 1
+    logger.debug('Available disks: %s', disks)
     if os.path.exists(opts.config_file):
         with open(opts.config_file) as cf:
             part_array = yaml.load(cf.read()).get("partitions")
