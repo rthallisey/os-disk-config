@@ -17,11 +17,13 @@
 import logging
 
 from os_disk_config import utils
+from os_disk_config.openstack.common import versionutils
 
 
 logger = logging.getLogger(__name__)
 
 _NUMBERED_NICS = None
+CONFIG_VERSION = '0.0.1'
 
 
 class InvalidConfigException(ValueError):
@@ -41,6 +43,16 @@ def _get_required_field(json, name, object_name):
               % (object_name, name)
         raise InvalidConfigException(msg)
     return field
+
+
+def check_version(json):
+    version = json.get('version')
+    if not version:
+        raise InvalidConfigException('No version specifier found in config')
+    if not versionutils.is_compatible(version, CONFIG_VERSION):
+        raise InvalidConfigException('Incompatible config version: '
+                                     '%s is not compatible with %s' %
+                                     (version, CONFIG_VERSION))
 
 
 class _BaseOpts(object):

@@ -99,7 +99,9 @@ def main(argv=sys.argv):
     logger.debug('Available disks: %s', disks)
     if os.path.exists(opts.config_file):
         with open(opts.config_file) as cf:
-            part_array = yaml.load(cf.read()).get("partitions")
+            full_config = yaml.load(cf.read())
+            objects.check_version(full_config)
+            part_array = full_config.get("partitions")
             logger.debug('partitions JSON: %s' % str(part_array))
     else:
         logger.error('No config file exists at: %s' % opts.config_file)
