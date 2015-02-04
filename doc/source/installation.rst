@@ -4,9 +4,9 @@ Installation
 
 At the command line::
 
-    $ pip install os-net-config
+    $ pip install os-disk-config
 
 Or, if you have virtualenvwrapper installed::
 
-    $ mkvirtualenv os-net-config
-    $ pip install os-net-config
+    $ mkvirtualenv os-disk-config
+    $ pip install os-disk-config

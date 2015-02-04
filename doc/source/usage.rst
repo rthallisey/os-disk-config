@@ -2,6 +2,6 @@
 Usage
 ========
 
-To use os-net-config in a project::
+To use os-disk-config in a project::
 
-	import os_net_config
+	import os_disk_config

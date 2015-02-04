@@ -1,9 +1,9 @@
-.. os-net-config documentation master file, created by
-   sphinx-quickstart on Tue Jul  9 22:26:36 2013.
+.. os-disk-config documentation master file, created by
+   rhallisey and bnemec
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to os-net-config's documentation!
+Welcome to os-disk-config's documentation!
 ========================================================
 
 Contents:
