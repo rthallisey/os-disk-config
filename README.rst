@@ -24,19 +24,14 @@ The project consists of:
 
 YAML Config Examples
 --------------------
- * Configure an 5G disk
+ * Configure a 5G disk::
 
-.. code-block:: yaml
-
-partitions:
-    - name: test1
-      disks:
-        - vdb
-      filesystem: ext4
-      size: 5 GiB
-      type: standard
-      mountpoint: /mnt/test
-version: 0.0.1
-
-..
-
+    partitions:
+        - name: test1
+          disks:
+            - vdb
+          filesystem: ext4
+          size: 5 GiB
+          type: standard
+          mountpoint: /mnt/test
+    version: 0.0.1
