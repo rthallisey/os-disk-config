@@ -38,7 +38,7 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
         return [i.path for i in self._blivet.devices if len(i.parents) == 0]
 
     def get_partition_info(self, partition):
-        # Match by partiction UUID, name, or path
+        # Match by partition UUID, name, or path
         partitions = self._blivet.partitions
         disk_info = {}
         for device in partitions:
