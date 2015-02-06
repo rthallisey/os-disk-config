@@ -37,6 +37,21 @@ class BlivetDiskConfig(impl_base.DiskConfigBase):
     def disks(self):
         return [i.path for i in self._blivet.devices if len(i.parents) == 0]
 
+    def get_partition_info(self, partition):
+        # Match by partiction UUID, name, or path
+        partitions = self._blivet.partitions
+        disk_info = {}
+        for device in partitions:
+            info = device.dict
+            if (info['path'] == partition or info['name'] == partition or
+                info['format']['uuid'] == partition):
+                disk_info = {'name': info['name'], 'fs_type': info['format']['type'],
+                        'path': info['path'], 'uuid': info['format']['uuid'],
+                        'mountpoint': info['format']['mountpoint']}
+                return disk_info
+        logger.debug('No match for partition %s' % partition)
+        return disk_info
+
     def add_standard_partition(self, obj):
         partition = self._get_partition(obj)
         self._create_partition(partition)
