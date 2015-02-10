@@ -16,6 +16,7 @@
 
 
 import argparse
+import json
 import logging
 import os
 import sys
@@ -97,7 +98,13 @@ def main(argv=sys.argv):
     logger.debug('Available disks: %s', disks)
     if os.path.exists(opts.config_file):
         with open(opts.config_file) as cf:
-            full_config = yaml.load(cf.read())
+            cf_data = cf.read()
+            # yaml will happily load a json file, but return worthless data
+            # json will blow up on a yaml file, so try it first
+            try:
+                full_config = json.loads(cf_data)
+            except ValueError:
+                full_config = yaml.load(cf_data)
             objects.check_version(full_config)
             part_array = full_config.get("partitions")
             logger.debug('partitions JSON: %s' % str(part_array))
